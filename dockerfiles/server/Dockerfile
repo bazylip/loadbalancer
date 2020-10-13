@@ -1,8 +1,7 @@
-FROM node
-WORKDIR .
-COPY package.json .
-RUN npm install
-RUN npm install express
-COPY . .
-CMD node app.js
-EXPOSE 5000
+FROM python:3
+COPY ./requirements.txt /requirements.txt
+WORKDIR /
+RUN pip install -r requirements.txt
+COPY . /
+ENTRYPOINT [ "python3" ]
+CMD [ "app.py" ]
