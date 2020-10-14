@@ -1,0 +1,12 @@
+version: '3'
+services:
+  server_name:
+    build: ./dockerfiles/server
+    ports:
+      - "port_src:port_dst"
+  nginx:
+    build: ./dockerfiles/loadbalancer
+    ports:
+      - "8080:80"
+    depends_on:
+      - server_list
