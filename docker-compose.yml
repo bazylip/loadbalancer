@@ -8,6 +8,10 @@ services:
     build: ./dockerfiles/server
     ports:
       - "5002:5000"
+  server3:
+    build: ./dockerfiles/server
+    ports:
+      - "5003:5000"
   nginx:
     build: ./dockerfiles/loadbalancer
     ports:
@@ -15,3 +19,4 @@ services:
     depends_on:
       - server1
       - server2
+      - server3
