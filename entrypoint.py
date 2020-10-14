@@ -22,7 +22,6 @@ class ConfigGenerator:
                 self.file = OrderedDict(yaml.load(file))
                 self.src_port = src_port
                 self.dst_port = dst_port
-                print(self.file)
         except FileNotFoundError:
             print('Invalid path')
             raise SystemExit
@@ -36,19 +35,21 @@ class ConfigGenerator:
         list_of_endpoints['nginx'] = self.file['services']['nginx']
         yaml_to_save = self.file
         yaml_to_save['services'] = list_of_endpoints
-        with open('docker-compose-test.yml', 'w') as outfile:
-            yaml.dump(dict(yaml_to_save), outfile, default_flow_style=False)
+        with open('docker-compose.yml', 'w') as outfile:
+            yaml.dump(yaml_to_save, outfile, default_flow_style=False)
 
     def generate_nginx_config(self):
+        c = nginx.Conf()
         u = nginx.Upstream('loadbalancer',
-                           nginx.Key('least_conn', '0'))
+                           nginx.Key('least_conn', ''))
         ip_addr = get_ip_address()
-        for server_idx in range(1, self.n_endpoints + 1):
+        for server_idx in range(self.n_endpoints):
             u.add(nginx.Key('server', f'{ip_addr}:{self.src_port + server_idx}'))
         s = nginx.Server(nginx.Location('/',
                                         nginx.Key('proxy_pass', 'http://loadbalancer')))
-        u.add(s)
-        nginx.dumpf(u, 'nginx-t.conf')
+        c.add(u)
+        c.add(s)
+        nginx.dumpf(c, 'dockerfiles/loadbalancer/nginx.conf')
 
 
 if __name__ == '__main__':
