@@ -1,8 +1,7 @@
-#!/usr/bin/python3.7
+#!/usr/bin/python3
 
 import sys
-import yaml
-import oyaml
+import oyaml as yaml
 from collections import OrderedDict
 import nginx
 import socket
@@ -37,7 +36,7 @@ class ConfigGenerator:
         yaml_to_save = self.file
         yaml_to_save['services'] = list_of_endpoints
         with open('docker-compose.yml', 'w') as outfile:
-            oyaml.dump(yaml_to_save, outfile, default_flow_style=False)
+            yaml.dump(yaml_to_save, outfile, default_flow_style=False)
 
     def generate_nginx_config(self):
         c = nginx.Conf()
@@ -48,7 +47,11 @@ class ConfigGenerator:
             u.add(nginx.Key('server', f'{ip_addr}:{self.src_port + server_idx}'))
         s = nginx.Server(nginx.Location('/',
                                         nginx.Key('proxy_pass', 'http://loadbalancer')))
+        loc = nginx.Location('/favicon.ico',
+                           nginx.Key('log_not_found', 'off'),
+                           nginx.Key('access_log', 'off'))
         c.add(u)
+        s.add(loc)
         c.add(s)
         nginx.dumpf(c, 'dockerfiles/loadbalancer/nginx.conf')
 
