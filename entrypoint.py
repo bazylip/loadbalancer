@@ -2,6 +2,7 @@
 
 import sys
 import yaml
+import oyaml
 from collections import OrderedDict
 import nginx
 import socket
@@ -36,7 +37,7 @@ class ConfigGenerator:
         yaml_to_save = self.file
         yaml_to_save['services'] = list_of_endpoints
         with open('docker-compose.yml', 'w') as outfile:
-            yaml.dump(yaml_to_save, outfile, default_flow_style=False)
+            oyaml.dump(yaml_to_save, outfile, default_flow_style=False)
 
     def generate_nginx_config(self):
         c = nginx.Conf()
