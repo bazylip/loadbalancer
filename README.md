@@ -26,7 +26,7 @@ root@machine: ~# exit
 user@machine: ~$ cat /tmp/secrets.txt
 cat: /tmp/secrets.txt: Permission denied
 ```
-Now let's imagine our docker is badly configurated, create Dockerfile trying to read this secret file.
+Now let's imagine our docker is badly configurated, in this example our area of focus is in root permissions granted, create Dockerfile trying to read this secret file.
 ```
 FROM debian:stretch
 CMD ["cat", "/tmp/secrets.txt"]
