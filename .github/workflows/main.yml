@@ -27,7 +27,7 @@ jobs:
           python3 tools/load_generator/load_generator.py -a localhost -n 20
       - name: Print docker-compose logs
         run:
-          docker-logs
+          docker-compose logs
       - name: Analyse docker-compose logs
         run: |
           echo "Requests sent: 20\n"
