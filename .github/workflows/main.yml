@@ -14,6 +14,8 @@ jobs:
       - name: Run ngrok
         run: ./ngrok http 8080 > /tmp/ngrok.log &
       - name: Get ngrok address
-        run: cat /tmp/ngrok.log
+        run: |
+          cat /tmp/ngrok.log
+          ls /tmp
       - name: Run load generator
         run: python3 tools/load_generator/load_generator.py -a localhost:8080 -n 5
