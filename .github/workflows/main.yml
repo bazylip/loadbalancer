@@ -5,6 +5,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Run entrypoint.sh
+        run: ./entrypoint 2
       - name: Build the stack
         run: docker-compose up -d
       - name: Install ngrok
@@ -17,5 +19,5 @@ jobs:
         run: cat ngrok.log | grep -o "url=http:.*" | cut -c 10-
       - name: Run load generator
         run: |
-          ping $(cat ngrok.log | grep -o "url=http:.*" | cut -c 5-) -c 5
+          ping $(cat ngrok.log | grep -o "url=http:.*" | cut -c 10-) -c 5
           # python3 tools/load_generator/load_generator.py -a $(cat ngrok.log | grep -o "url=http:.*" | cut -c 5-) -n 5
