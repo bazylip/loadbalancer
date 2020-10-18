@@ -1,11 +1,11 @@
 name: Docker Compose Actions Workflow
 on: push
 jobs:
-  test:
+  Run loadbalancer:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Build the stack
         run: docker-compose up -d
       - name: Run load generator
-        run: python3 tools/load_generator/load_generator.py -a NGROK_ADDRESS -n 5
+        run: python3 tools/load_generator/load_generator.py -a localhost:8080 -n 5
