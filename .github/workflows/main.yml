@@ -18,4 +18,4 @@ jobs:
       - name: Run load generator
         run: python3 tools/load_generator/load_generator.py -a $NGROK_ADDRESS -n 5
         env:
-          NGROK_ADDRESS: cat ngrok.log | grep -o "url=http:.*" | cut -c 5-
+          NGROK_ADDRESS: $(cat ngrok.log | grep -o "url=http:.*" | cut -c 5-)
