@@ -1,6 +1,10 @@
 name: Example usage of loadbalancer
 on:
-  [workflow_dispatch]
+  workflow_dispatch:
+    inputs:
+      num_servers:
+        description: Number of servers serving the requests
+        required: True
 jobs:
   build:
     runs-on: ubuntu-latest
