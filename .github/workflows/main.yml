@@ -17,6 +17,7 @@ jobs:
           sudo apt-get install python3-dev python3-pip python3-venv python3-wheel python3-setuptools -y
           pip3 install wheel
           pip3 install -r requirements.txt
+          echo {{ github.event.inputs.num_servers }}
           ./entrypoint.py {{ github.event.inputs.num_servers }}
       - name: Build and run servers
         run: docker-compose up -d
