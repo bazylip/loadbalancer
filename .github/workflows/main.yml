@@ -30,10 +30,8 @@ jobs:
         run: |
           echo "Requests sent: 30\n"
 
-          INDEX=1
-          for i in {1..${{ github.event.inputs.num_servers }}}
+          for num in {1..${{ github.event.inputs.num_servers }}}
           do
-            echo "Requests served by server $INDEX:" $(docker-compose logs | grep "server_$INDEX_1.*GET.*")
-            let INDEX=${INDEX}+1
+            echo "Requests served by server $num:" $(docker-compose logs | grep "server_${num}_1.*GET.*")
           done
           # echo "Requests served by server 2:" $(docker-compose logs | grep "server_2_1.*GET.*" | wc -l)
