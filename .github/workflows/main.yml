@@ -1,11 +1,11 @@
-name: Docker Compose Actions Workflow
+name: Example usage of loadbalancer
 on: push
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Run entrypoint.py
+      - name: Prepare configs
         run: |
           sudo apt-get install gcc libpq-dev -y
           sudo apt-get install python-dev  python-pip -y
@@ -13,12 +13,16 @@ jobs:
           pip3 install wheel
           pip3 install -r requirements.txt
           ./entrypoint.py 2
-      - name: Build the stack
+      - name: Build and run servers
         run: docker-compose up -d
       - name: Run load generator
         run: |
           python3 tools/load_generator/load_generator.py -a localhost -n 20
+      - name: Print docker-compose logs
+        run:
+          docker-logs
       - name: Analyse docker-compose logs
         run: |
-          echo "Packets on server 1:" $(docker-compose logs | grep "server_1_1.*GET.*" | wc -l)
-          echo "Packets on server 2:" $(docker-compose logs | grep "server_2_1.*GET.*" | wc -l)
+          echo "Requests sent: 20\n"
+          echo "Requests served by server 1:" $(docker-compose logs | grep "server_1_1.*GET.*" | wc -l)
+          echo "Requests served by server 2:" $(docker-compose logs | grep "server_2_1.*GET.*" | wc -l)
