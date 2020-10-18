@@ -5,6 +5,9 @@ on:
       num_servers:
         description: Number of servers serving the requests
         required: True
+      num_packets:
+        description: Number of packets to send
+        required: True
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -22,16 +25,15 @@ jobs:
         run: docker-compose up -d
       - name: Run load generator
         run: |
-          python3 tools/load_generator/load_generator.py -a localhost -n 30
+          python3 tools/load_generator/load_generator.py -a localhost -n ${{ github.event.inputs.num_packets }}
       - name: Print docker-compose logs
         run:
           docker-compose logs
       - name: Analyse docker-compose logs
         run: |
-          echo "Requests sent: 30\n"
+          echo "Requests sent: ${{ github.event.inputs.num_packets }}\n"
 
           for num in {1..${{ github.event.inputs.num_servers }}}
           do
-            echo "Requests served by server $num:" $(docker-compose logs | grep "server_${num}_1.*GET.*")
+            echo "Requests served by server $num:" $(docker-compose logs | grep "server_${num}_1.*GET.*" | wc -l)
           done
-          # echo "Requests served by server 2:" $(docker-compose logs | grep "server_2_1.*GET.*" | wc -l)
