@@ -5,8 +5,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Run entrypoint.sh
-        run: ./entrypoint 2
+      - name: Run entrypoint.py
+        run: ./entrypoint.py 2
       - name: Build the stack
         run: docker-compose up -d
       - name: Install ngrok
