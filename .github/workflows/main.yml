@@ -16,4 +16,6 @@ jobs:
       - name: Get ngrok address
         run: cat ngrok.log | grep -o "url=http:.*" | cut -c 5-
       - name: Run load generator
-        run: python3 tools/load_generator/load_generator.py -a $(cat ngrok.log | grep -o "url=http:.*" | cut -c 5-) -n 5
+        run: |
+          ping $(cat ngrok.log | grep -o "url=http:.*" | cut -c 5-) -c 5
+          # python3 tools/load_generator/load_generator.py -a $(cat ngrok.log | grep -o "url=http:.*" | cut -c 5-) -n 5
