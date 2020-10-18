@@ -17,4 +17,8 @@ jobs:
         run: docker-compose up -d
       - name: Run load generator
         run: |
-          python3 tools/load_generator/load_generator.py -a localhost -n 5
+          python3 tools/load_generator/load_generator.py -a localhost -n 20
+      - name: Analyse docker-compose logs
+        run: |
+          echo "Packets on server 1:" $(docker-compose logs | grep "server_1_1.*GET.*" | wc -l)
+          echo "Packets on server 2:" $(docker-compose logs | grep "server_2_1.*GET.*" | wc -l)
