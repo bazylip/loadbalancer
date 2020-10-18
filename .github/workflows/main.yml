@@ -31,6 +31,6 @@ jobs:
           echo "Requests sent: 30\n"
           for num in {1..${{ github.event.inputs.num_servers }}}
           do
-            echo "Requests served by server $num:" $(docker-compose logs | grep "server_$num_1.*GET.*" | wc -l)
+            echo "Requests served by server $num:" $(docker-compose logs | grep "server_$num_1.*GET.*")
           done
           # echo "Requests served by server 2:" $(docker-compose logs | grep "server_2_1.*GET.*" | wc -l)
