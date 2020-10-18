@@ -18,7 +18,7 @@ if __name__ == "__main__":
 
     successful_conn, dropped_conn, no_content_conn = 0, 0, 0
     count = args["number"]
-    address = args["address"]
+    address = "http://127.0.0.1:8080/" if args["address"] == "localhost" else args["address"]
 
     for _ in range(count):
         try:
