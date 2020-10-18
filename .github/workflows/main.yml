@@ -17,18 +17,20 @@ jobs:
           sudo apt-get install python3-dev python3-pip python3-venv python3-wheel python3-setuptools -y
           pip3 install wheel
           pip3 install -r requirements.txt
-          echo "${{ github.event.inputs.num_servers }}"
           ./entrypoint.py ${{ github.event.inputs.num_servers }}
       - name: Build and run servers
         run: docker-compose up -d
       - name: Run load generator
         run: |
-          python3 tools/load_generator/load_generator.py -a localhost -n 20
+          python3 tools/load_generator/load_generator.py -a localhost -n 30
       - name: Print docker-compose logs
         run:
           docker-compose logs
       - name: Analyse docker-compose logs
         run: |
-          echo "Requests sent: 20\n"
-          echo "Requests served by server 1:" $(docker-compose logs | grep "server_1_1.*GET.*" | wc -l)
-          echo "Requests served by server 2:" $(docker-compose logs | grep "server_2_1.*GET.*" | wc -l)
+          echo "Requests sent: 30\n"
+          for num in {1..${{ github.event.inputs.num_servers }}}
+          do
+            echo "Requests served by server 1:" $(docker-compose logs | grep "server_$num_1.*GET.*" | wc -l)
+          done
+          # echo "Requests served by server 2:" $(docker-compose logs | grep "server_2_1.*GET.*" | wc -l)
