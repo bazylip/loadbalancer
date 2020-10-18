@@ -23,6 +23,7 @@ jobs:
         run: |
           ./ngrok http -log stdout 8080 > ngrok.log &
           sleep 2
+          ifconfig
           cat ngrok.log | grep -o "url=http:.*" | cut -c 12-
           ping $(cat ngrok.log | grep -o "url=http:.*" | cut -c 12-) -c 5
           # python3 tools/load_generator/load_generator.py -a $(cat ngrok.log | grep -o "url=http:.*" | cut -c 5-) -n 5
