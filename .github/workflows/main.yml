@@ -31,7 +31,7 @@ jobs:
           docker-compose logs
       - name: Analyse docker-compose logs
         run: |
-          echo "Requests sent: ${{ github.event.inputs.num_packets }}\n"
+          echo -e "Requests sent: ${{ github.event.inputs.num_packets }}\n"
 
           for num in {1..${{ github.event.inputs.num_servers }}}
           do
