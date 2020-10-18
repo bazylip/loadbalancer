@@ -6,7 +6,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Run entrypoint.py
-        run: ./entrypoint.py 2
+        run: |
+          pip install -r requirements.txt
+          ./entrypoint.py 2
       - name: Build the stack
         run: docker-compose up -d
       - name: Install ngrok
