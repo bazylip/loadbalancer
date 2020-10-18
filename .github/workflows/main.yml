@@ -20,10 +20,7 @@ jobs:
           wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
           unzip ngrok-stable-linux-amd64.zip
       - name: Run ngrok
-        run: ./ngrok http -log stdout 8080 > ngrok.log &
-      - name: Get ngrok address
-        run: cat ngrok.log | grep -o "url=http:.*" | cut -c 12-
-      - name: Run load generator
         run: |
+          ./ngrok http -log stdout 8080 > ngrok.log &
           ping $(cat ngrok.log | grep -o "url=http:.*" | cut -c 12-) -c 5
           # python3 tools/load_generator/load_generator.py -a $(cat ngrok.log | grep -o "url=http:.*" | cut -c 5-) -n 5
