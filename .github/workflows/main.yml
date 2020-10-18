@@ -14,7 +14,7 @@ jobs:
       - name: Run ngrok
         run: ./ngrok http -log stdout 8080 > ngrok.log &
       - name: Get ngrok address
-        run: cat ngrok.log | grep -o "url=http:.*" | cut -c 5-
+        run: cat ngrok.log | grep -o "url=http:.*" | cut -c 10-
       - name: Run load generator
         run: |
           ping $(cat ngrok.log | grep -o "url=http:.*" | cut -c 5-) -c 5
